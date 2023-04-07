@@ -1,35 +1,39 @@
 clear all, close all, clc
 %ucitavanje signala:
-[x, fs] = audioread('./domaci2/recenica 10.wav');
+[x, fs] = audioread('./recenica 10.wav');
 
 %Obrada u vremenskom domenu (normmalizacija signala i uklanjanje
 %jednosmerne komponente)
+
 x = x./max(abs(x));
 DC = mean(x);
 x = x - DC;
 
 %prikaz u vremenskom domenu
 t = (0:length(x)-1)*(1/fs);
-%figure, plot(t, x, 'b'), ylim([-1.1 1.1])
+T=1/fs;
+op= T:T:length(x)*T;
 
 %parametri
 tStep = 0.03;
 count = round(tStep*fs);
 p0 = 2*10^-5;
-eThreshold = 64;
+eThreshold = 55;
 zcrThreshold = 70;
+
 %nizovi
-RMS = [];
 ZCR=[];
+RMS = [];
+f0 = [];
 L=[];
-f0=[];
 
 %kreiranje filtra za izvlacenje zvucnih delova zbog nalazenja ZCR-a
-wn1=80/(fs/2);
-wn2=600/(fs/2);
+wn1=100/(fs/2);
+wn2=650/(fs/2);
 M=50;
 N=2*M;
 h=fir1(N, [wn1 wn2], rectwin(N+1));
+tI = 10*10^-3;
 
 for i = 1:(count/2):length(x)-count
     y = x(i:i+count-1);
@@ -50,6 +54,27 @@ for i = 1:(count/2):length(x)-count
 
     
 end
+
+%Plotovanje RMS, ZCR i osnovne frekvencije
+tNormal = tStep/2;
+tOsa = (0:length(RMS)-tNormal)*tNormal;
+maxRMS = max(abs(RMS));
+RMSNovo = RMS/maxRMS;
+maxF0 = max(abs(f0));
+f0Novo = f0/maxF0;
+figure, plot(tOsa, L, 'r', t, x, 'b', tOsa, RMSNovo, 'g', tOsa, f0Novo, 'black'), ylim([-1.1, 1.1]);
+
+r = 0:tStep/2:(length(RMS)-1)*tStep/2;
+%iscrtavanje
+figure, plot(r, RMS)
+title("RMS")
+figure, plot(r, ZCR)
+title("ZCR")
+figure, plot(op, x, r, L)
+ylim([-1.1 1.1])
+title("Zvucnost")
+figure,plot(r, f0)
+title("f0")
 
 %ZCR Funkcija
 function zcr = zcr(x)
