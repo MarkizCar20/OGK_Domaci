@@ -58,10 +58,10 @@ f0Novo = f0/maxF0;
 maxZCR = max(abs(ZCR));
 ZCRNovo = ZCR/maxZCR;
 figure, plot(tOsa, L, 'r', t, x, 'b', tOsa, RMSNovo, 'g', tOsa, f0Novo, 'black'), ylim([-1.1, 1.1]);
-figure, plot(tOsa, L, 'r', 'LineWidth', 1.3),title('Promena nivoa signala'), ylim([-0.5, 1.1]);
-figure, plot(tOsa, RMSNovo, 'r', 'LineWidth', 1.3),title('RMS'), ylim([0.4, 1.1]);
-figure, plot(tOsa, f0Novo, 'r', 'LineWidth', 1.3),title('Promena osnovne ucestanosti'), ylim([0, 1.1]);
-figure, plot(tOsa, ZCRNovo, 'r', 'LineWidth', 1.3),title('Promena ZCR'), ylim([0, 1.1]);    
+figure, plot(tOsa, L, 'r', 'LineWidth', 6),title('Promena nivoa signala'), ylim([-0.5, 1.1]);
+figure, plot(tOsa, RMSNovo, 'r', 'LineWidth', 6),title('RMS'), ylim([0, 1.1]);
+figure, plot(tOsa, f0Novo, 'r', 'LineWidth', 6),title('Promena osnovne ucestanosti'), ylim([0, 1.1]);
+figure, plot(tOsa, ZCRNovo, 'r', 'LineWidth', 12),title('Promena ZCR'), ylim([0, 1.1]);    
 
 %ZCR Funkcija
 function zcr = zcr(x)
