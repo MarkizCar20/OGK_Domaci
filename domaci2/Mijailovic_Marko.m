@@ -8,7 +8,7 @@ x = x./max(abs(x));
 DC = mean(x);
 x = x - DC;
 
-%prikaz u vremenskom domenu
+%prikaz u vremenskom domenu i spektrogram
 t = (0:length(x)-1)*(1/fs);
 
 %parametri
