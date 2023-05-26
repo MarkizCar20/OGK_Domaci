@@ -8,11 +8,11 @@ mfccMatrix = [];
 
 %%Proba sa malom bazom:
 a = 5;
-b = 40;
+b = 205;
 
 for cnt1 = 1:a
-    for cnt2 = b-4:b
-        fileName = sprintf('Mala_baza/broj_%d_%d.wav', cnt1, cnt2 );
+    for cnt2 = 1:b
+        fileName = sprintf('Baza_Snimaka/broj_%d_%d.wav', cnt1, cnt2 );
         [y, fs] = audioread(fileName);
         Tw = (length(y)*1000)/(frameCount*fs);
         mfccVector = testMFCC(Tw, C, y, fs);
@@ -23,11 +23,11 @@ end
 mfccCompare = [];
 Threshold = [];
 
-for i = 1:5*5
-    for j = 1:5*5
+for i = 1:a*b
+    for j = 1:a*b
         d = norm(mfccMatrix(i,:) - mfccMatrix(j, :));
         mfccCompare(i, j) = d;
-        if d < 185;
+        if d < 205;
             Threshold(i, j) = 1;
         else
             Threshold(i, j) = 0;
@@ -39,8 +39,8 @@ end
 successRate = zeros(1, round(max(mfccCompare, [], 'all')));
 
 for k = 1:round(max(mfccCompare, [], 'all'));
-    for i = 1:5*5
-        for j = 1:5*5
+    for i = 1:a*b
+        for j = 1:a*b
             d = norm(mfccMatrix(i, :) - mfccMatrix(j, :));
             mfccCompare(i, j) = d;
             if d < k
@@ -50,7 +50,7 @@ for k = 1:round(max(mfccCompare, [], 'all'));
     end
 end
 
-successRate = successRate/625;
+successRate = successRate/(a*b);
 figure(1), plot(1 - successRate);
 figure(2), surf(mfccCompare, 'EdgeColor','none'), colorbar, view(2), colormap jet;
 figure(3), surf(Threshold, 'EdgeColor','none'), colorbar, view(2), colormap jet;
